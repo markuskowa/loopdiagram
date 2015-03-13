@@ -1,0 +1,176 @@
+%%
+%% The loop diagram package. Provides a PS-tricks based loop digramm
+%% environment and some macros to generate interaction arrows.
+%%
+%% Author: Markus Kowalewski (markus.kowalewski.uu@gmail.com)
+%%
+
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{loopdiagram}[2015/03/01 Loop diagrams]
+
+
+\RequirePackage{pstricks,pst-plot,pst-coil}
+\RequirePackage{expl3}
+%
+% The loopdigram environment
+% 
+% Options: total time, intial ket, initial bra
+%
+\newenvironment{loopdiagram}[3]{ % begin
+
+\psset{xunit=0.3in,yunit=0.3in,runit=0.3in,plotpoints=200,
+       dash=4pt 4pt,linewidth=2pt,dotsep=4pt} 
+       
+\def\looplen{#1}  % height of the loop
+\def\loopbase{2}  % base x
+\def\loopwidth{2} % width 
+
+\begin{pspicture}(0,0)(6, #1)
+
+%
+% place a ket vector
+% usage: \putket{y}{state}
+%
+\newcommand{\putket}[2]{\rput[lb](!\loopbase\space .2 add ##1){$\vert ##2 \rangle$}}
+
+%
+% place a bra vector
+% usage: \putket{y}{state}
+%
+\newcommand{\putbra}[2]{\rput[rb](!\loopbase\space \loopwidth\space add -.2 add ##1){$\langle ##2 \vert$}}
+
+%
+% place a dipole interaction on the ket side
+% usage: \ketdipin{t}{fieldlabel}{timelabel}{state}
+%
+\newcommand{\ketintin}[4]
+{
+% arrow in ->
+\psline{->}(!\loopbase\space -1 add ##1\space -.5 add)(\loopbase,##1)
+% field label
+\rput[Br](!\loopbase\space -1 add ##1\space -.5 add){##2}
+% time label
+\rput[br](!\loopbase\space -.1 add ##1){##3}
+% state after interaction
+\putket{##1}{##4}
+}
+
+%
+% place a dipole interaction on the bra side
+% usage: \braintin{t}{fieldlabel}{timelabel}{state}
+%
+\newcommand{\braintin}[4]
+{
+% arrow in ->
+\psline{->}(!\loopbase\space \loopwidth\space add 1 add ##1\space -.5 add)
+ (!\loopbase\space \loopwidth\space add ##1)
+% field label
+\rput[Bl](!\loopbase\space \loopwidth\space add 1 add ##1\space -.5 add){##2}
+% time label
+\rput[bl](!\loopbase\space \loopwidth\space add .15 add ##1){##3}
+% state after interaction
+\putbra{##1}{##4}
+}
+
+%
+% place a dipole interaction on the ket side
+% usage: \ketintout{t}{fieldlabel}{timelabel}{state}
+%
+\newcommand{\ketintout}[4]
+{
+% arrow out ->
+\psline{->}(\loopbase,##1)(!\loopbase\space -1 add ##1\space +.5 add)
+% field label
+\rput[Br](!\loopbase\space -1 add ##1\space +.5 add){##2}
+% time label
+\rput[br](!\loopbase\space -.1 add ##1 0.4 add){##3}
+% state after interaction
+\putket{##1}{##4}
+}
+
+%
+% place a dipole interaction on the bra side
+% usage: \braintout{t}{fieldlabel}{timelabel}{state}
+%
+\newcommand{\braintout}[4]
+{
+% arrow in ->
+\psline{->}(!\loopbase\space \loopwidth\space add ##1)
+ (!\loopbase\space \loopwidth\space add 1 add ##1\space +.5 add)
+% field label
+\rput[Bl](!\loopbase\space \loopwidth\space add 1 add ##1\space +.5 add){##2}
+% time label
+\rput[bl](!\loopbase\space \loopwidth\space add 0.15 add ##1 0.4 add){##3}
+% state after interaction
+\putbra{##1}{##4}
+}
+
+%
+% Place a Raman interaction on the ket side
+% usage: \ketintio{t}{fieldlabel_in}{fieldlabel_out}{timelabel}{state}
+%
+\newcommand{\ketintio}[5]
+{
+% arrow in ->
+\psline{->}(!\loopbase\space -1 add ##1\space -.5 add)(\loopbase,##1)
+% arrow out <-
+\psline{->}(\loopbase,##1)(!\loopbase\space -1 add ##1\space +.5 add)
+% field label in
+\rput[Br](!\loopbase\space -1 add ##1\space -.5 add){##2}
+% field label out
+\rput[Br](!\loopbase\space -1 add ##1\space +.5 add){##3}
+%time label
+\rput[br](!\loopbase\space -.1 add ##1 0.4 add){##4}
+% state after interaction
+\putket{##1}{##5}
+}
+
+%
+% Place a Raman interaction on the ket side
+% usage: \braintio{t}{fieldlabel_in}{fieldlabel_out}{timelabel}{state}
+%
+\newcommand{\braintio}[5]
+{
+% arrow out ->
+\psline{->}(!\loopbase\space \loopwidth\space add ##1)
+ (!\loopbase\space \loopwidth\space add 1 add ##1\space +.5 add)
+% field label out
+\rput[Bl](!\loopbase\space \loopwidth\space add 1 add ##1\space +.5 add){##3}
+% time label
+\rput[bl](!\loopbase\space \loopwidth\space add 0.15 add ##1 0.4 add){##4}
+% state after interaction
+\putbra{##1}{##5}
+% arrow in <-
+\psline{->}(!\loopbase\space \loopwidth\space add 1 add ##1\space -.5 add)
+ (!\loopbase\space \loopwidth\space add ##1)
+% field label
+\rput[Bl](!\loopbase\space \loopwidth\space add 1 add ##1\space -.5 add){##2}
+}
+
+
+%
+% Setup base diagram
+%
+
+
+% place the ket line
+\psline[arrowlength=2,arrowinset=0]{->}(\loopbase, 0)(\loopbase,1)
+\psline(\loopbase,0)(!\loopbase\space \looplen\space -1 add)
+\putket{0}{#2}
+
+% place the bra line
+\psline(!\loopbase\space \loopwidth\space add \looplen\space -1 add)(!\loopbase\space \loopwidth\space add 0)
+\psline[arrowlength=2,arrowinset=0]{>-}(4,1)(4,0)
+\putbra{0}{#3}
+
+% the arc/loop on top
+\psarc(!\loopwidth\space 0.5 mul \loopbase\space add \looplen\space -1 add){1}{0}{90}
+\psarc[arrowlength=1.5,arrowinset=0]{<-}(!\loopwidth\space 0.5 mul \loopbase\space add \looplen\space -1 add){1}{85}{180}
+
+
+}{ \end{pspicture} }
+
+
+
+
+\endinput
