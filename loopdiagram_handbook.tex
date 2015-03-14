@@ -13,22 +13,45 @@
 \fbox{
 \begin{loopdiagram}{9}{g}{d}
 \psgrid[subgriddiv=2](0,0)(0,0)(6,9)
-\ketintio{5}{$\omega_1$}{$\omega_2$}{$\tau_6$}{c}
-\braintio{6}{$\omega_1$}{$\omega_2$}{$\tau_5$}{e}
+\ketinout{5}{$\omega_1$}{$\omega_2$}{$\tau_6$}{c}
+\brainout{6}{$\omega_1$}{$\omega_2$}{$\tau_5$}{e}
 
 
-\ketintout{7}{$\omega_s$}{$t$}{e}
+\ketout{7}{$\omega_s$}{$t$}{e}
 
 
-\ketintin{2}{$\omega_1$}{$\tau_1$}{e}
-\braintin{2}{$\omega_2$}{$\tau_2$}{e^\prime}
+\ketin{2}{$\omega_1$}{$\tau_1$}{e}
+\brain{2}{$\omega_2$}{$\tau_2$}{e^\prime}
 
-\ketintout{3}{$\omega_3$}{$\tau_3$}{f}
-\braintout{3}{$\omega_4$}{$\tau_4$}{f^\prime}
+\ketout{3}{$\omega_3$}{$\tau_3$}{f}
+\braout{3}{$\omega_4$}{$\tau_4$}{f^\prime}
 \end{loopdiagram}
 }
 \caption{All possible macros in one loop diagram}
 \label{fig:diagall}
+\end{figure}
+
+\begin{figure}
+\centering
+\fbox{
+\begin{ladderdiagram}{9}{g}{d}
+\psgrid[subgriddiv=2](0,0)(0,0)(6,9)
+\ketinout{5}{$\omega_1$}{$\omega_2$}{$\tau_6$}{c}
+\brainout{6}{$\omega_1$}{$\omega_2$}{$\tau_5$}{e}
+
+
+\ketout{7}{$\omega_s$}{$t$}{e}
+
+
+\ketin{2}{$\omega_1$}{$\tau_1$}{e}
+\brain{2}{$\omega_2$}{$\tau_2$}{e^\prime}
+
+\ketout{3}{$\omega_3$}{$\tau_3$}{f}
+\braout{3}{$\omega_4$}{$\tau_4$}{f^\prime}
+\end{ladderdiagram}
+}
+\caption{All possible macros in one ladder diagram}
+\label{fig:ldiagall}
 \end{figure}
 
 The code for fig. \ref{fig:diagall}
@@ -47,4 +70,19 @@ The code for fig. \ref{fig:diagall}
 \braintout{3}{$\omega_4$}{$\tau_4$}{f^\prime}
 \end{loopdiagram}
 \end{verbatim}
+
+\begin{leveldiagram}{5}{8}
+\putlevel{0}{0}{5}{g}
+\putlevel{1}{.5}{1.5}{e}
+
+\fieldup{0}{5}{0.25}{$\omega_1$}
+\fielddown{1}{5}{0.75}{$\omega_2$}
+\putvlevel{5}{0.2}{0.6}
+
+\fieldup{1}{6}{1.75}{$\omega_1$}
+\fielddown{0}{6}{2.25}{$\omega_s$}
+\end{leveldiagram}
+
+
 \end{document}
+
