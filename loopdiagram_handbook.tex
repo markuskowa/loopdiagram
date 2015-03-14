@@ -8,81 +8,152 @@
 \begin{document}
 \maketitle
 
-\begin{figure}
-\centering
-\fbox{
+\section{Introduction}
+This package provides a simple interface to create common types of spectroscopic
+diagrams. All drawing macros are implemented by using the PSTricks packages.
+Use either plain LaTeX or XeLaTex to compile documents. With PDFLatex there are
+some PSTricks specific problems. The package is simply called by specifing
+\verb|\usepackage{loopdiagram}| in the document header.
+
+\section{Types of Diagrams}
+So far three different types of diagrams are implemented: Simple energy level
+diagrams, ladder diagrams, and loop diagrams. For each type of diagram a separate
+environment is specified, which draws the basic structures. The interactions are
+added through simple macros.
+
+The environments for loop and ladder diagrams are defined in the same way:
+\begin{verbatim}
+\begin{loopdiagram}{<height>}{<ket level>}{<bra level>}
+\end{verbatim}
+\begin{verbatim}
+\begin{ladderdiagram}{<height>}{<ket level>}{<bra level>}
+\end{verbatim}   
+The \verb|height| parameter defines the vertical length (or time). Furthermore,
+the initial state is defined by the bra and ket symbols. These are set into math
+mode automatically.
+The following macros are available to set interactions in the diagrams. These
+macros are designed to take care of the label placements for field labels, time
+labels, and the state change.
+\begin{verbatim}
+\ketin{<time>}{<field label>}{<time label>}{<new state>}
+\brain{<time>}{<field label>}{<time label>}{<new state>}
+\end{verbatim}
+These macros draw in going arrows on the ket and bra side respectively as they
+are typically used to symbolize an absorptive dipole interactions. The
+\verb|time| parameter determines the y-value where arrow tips the vertical lines
+of the diagram.
+Dipole emission interactions are given by the respective \verb|out| version of these
+commands:
+\begin{verbatim}
+\ketout{<time>}{<field label>}{<time label>}{<new state>}
+\braout{<time>}{<field label>}{<time label>}{<new state>}
+\end{verbatim}
+Off-resonant Raman type interactions can be drawn with the \verb|inout| commands:
+\begin{verbatim}
+\ketinout{<time>}{<f label in>}{<f label out>}{<t label>}{<new state>}
+\brainout{<time>}{<f label in>}{<f label out>}{<t label>}{<new state>}
+\end{verbatim}
+The time in the intermediate state is set to zero and thus only one time label
+and final state needs to be specified here.
+
+For energy level diagrams the \verb|leveldiagram| environment is available:
+\begin{verbatim}
+\begin{leveldiagram}{<width>}{<height>}
+\end{verbatim}
+Energy levels are placed with:
+\begin{verbatim}
+\putlevel{<E>}{<x>}{<width>}{<label>}
+\end{verbatim}
+Where \verb|E| parameter specifies the energy value (y-value), \verb|x|
+and \verb|width| control the horizontal placement, and \verb|label| puts
+the level label to the left of the level.
+To indicate off-resonant interactions with non further specified set of
+levels the
+\begin{verbatim}
+\putvlevel{<E>}{<x>}{<width>}
+\end{verbatim}
+command is available ("virtual" levels). Vertical arrows denoting the interactions
+with a field are drawn by:
+\begin{verbatim}
+\fieldup{<Emin>}{<Emax>}{<x>}{<label>}
+\fielddown{<Emin>}{<Emax>}{<x>}{<label>}
+\end{verbatim}
+
+
+\section{Examples}
+Here we go. Let's create a loop diagram like this:
+\begin{center}
 \begin{loopdiagram}{9}{g}{d}
 \psgrid[subgriddiv=2](0,0)(0,0)(6,9)
 \ketinout{5}{$\omega_1$}{$\omega_2$}{$\tau_6$}{c}
 \brainout{6}{$\omega_1$}{$\omega_2$}{$\tau_5$}{e}
-
-
 \ketout{7}{$\omega_s$}{$t$}{e}
-
-
 \ketin{2}{$\omega_1$}{$\tau_1$}{e}
 \brain{2}{$\omega_2$}{$\tau_2$}{e^\prime}
-
 \ketout{3}{$\omega_3$}{$\tau_3$}{f}
 \braout{3}{$\omega_4$}{$\tau_4$}{f^\prime}
 \end{loopdiagram}
-}
-\caption{All possible macros in one loop diagram}
-\label{fig:diagall}
-\end{figure}
-
-\begin{figure}
-\centering
-\fbox{
-\begin{ladderdiagram}{9}{g}{d}
+\end{center}
+The grid in the background is just there to visualize the coordinate system.
+This is the code to create it:
+\begin{verbatim}
+\begin{loopdiagram}{9}{g}{d}
 \psgrid[subgriddiv=2](0,0)(0,0)(6,9)
-\ketinout{5}{$\omega_1$}{$\omega_2$}{$\tau_6$}{c}
-\brainout{6}{$\omega_1$}{$\omega_2$}{$\tau_5$}{e}
-
-
-\ketout{7}{$\omega_s$}{$t$}{e}
-
-
 \ketin{2}{$\omega_1$}{$\tau_1$}{e}
 \brain{2}{$\omega_2$}{$\tau_2$}{e^\prime}
-
 \ketout{3}{$\omega_3$}{$\tau_3$}{f}
 \braout{3}{$\omega_4$}{$\tau_4$}{f^\prime}
-\end{ladderdiagram}
-}
-\caption{All possible macros in one ladder diagram}
-\label{fig:ldiagall}
-\end{figure}
-
-The code for fig. \ref{fig:diagall}
-\begin{verbatim}
-\begin{loopdiagram}{8.5}{g}{d}
-
-\ketintio{5}{$\omega_1$}{$\omega_2$}{$\tau_6$}{c}
-\braintio{6}{$\omega_1$}{$\omega_2$}{$\tau_5$}{e}
-
-\ketintout{7}{$\omega_s$}{$t$}{e}
-
-\ketintin{2}{$\omega_1$}{$\tau_1$}{e}
-\braintin{2}{$\omega_2$}{$\tau_2$}{e^\prime}
-
-\ketintout{3}{$\omega_3$}{$\tau_3$}{f}
-\braintout{3}{$\omega_4$}{$\tau_4$}{f^\prime}
+\ketinout{5}{$\omega_1$}{$\omega_2$}{$\tau_6$}{c}
+\brainout{6}{$\omega_1$}{$\omega_2$}{$\tau_5$}{e}
+\ketout{7}{$\omega_s$}{$t$}{e}
 \end{loopdiagram}
 \end{verbatim}
 
-\begin{leveldiagram}{5}{8}
-\putlevel{0}{0}{5}{g}
-\putlevel{1}{.5}{1.5}{e}
+Here is the same thing, but ploted as a ladder digram with the
+\verb|ladderdiagram| environment:
+\begin{center}
+\begin{ladderdiagram}{9}{g}{d}
+%\psgrid[subgriddiv=2](0,0)(0,0)(6,9)
+\ketinout{5}{$\omega_1$}{$\omega_2$}{$\tau_6$}{c}
+\brainout{6}{$\omega_1$}{$\omega_2$}{$\tau_5$}{e}
+\ketout{7}{$\omega_s$}{$t$}{e}
+\ketin{2}{$\omega_1$}{$\tau_1$}{e}
+\brain{2}{$\omega_2$}{$\tau_2$}{e^\prime}
+\ketout{3}{$\omega_3$}{$\tau_3$}{f}
+\braout{3}{$\omega_4$}{$\tau_4$}{f^\prime}
+\end{ladderdiagram}
+\end{center}
+
+And last but not least a level scheme:
+\begin{center}
+\begin{leveldiagram}{5}{7}
+\putlevel{0}{0}{4}{g}
+\putlevel{1}{1}{2}{e}
 
 \fieldup{0}{5}{0.25}{$\omega_1$}
-\fielddown{1}{5}{0.75}{$\omega_2$}
-\putvlevel{5}{0.2}{0.6}
+\fielddown{1}{5}{1.25}{$\omega_2$}
+\putvlevel{5}{0}{1.5}
 
-\fieldup{1}{6}{1.75}{$\omega_1$}
-\fielddown{0}{6}{2.25}{$\omega_s$}
+\fieldup{1}{6}{2.75}{$\omega_1$}
+\fielddown{0}{6}{3.75}{$\omega_s$}
+\putvlevel{6}{2.5}{1.5}
 \end{leveldiagram}
+\end{center}
+created by:
+\begin{verbatim}
+\begin{leveldiagram}{5}{7}
+\putlevel{0}{0}{4}{g}
+\putlevel{1}{1}{2}{e}
 
+\fieldup{0}{5}{0.25}{$\omega_1$}
+\fielddown{1}{5}{1.25}{$\omega_2$}
+\putvlevel{5}{0}{1.5}
+
+\fieldup{1}{6}{2.75}{$\omega_1$}
+\fielddown{0}{6}{3.75}{$\omega_s$}
+\putvlevel{6}{2.5}{1.5}
+\end{leveldiagram}
+\end{verbatim}
 
 \end{document}
 
