@@ -9,8 +9,11 @@
 \ProvidesPackage{loopdiagram}[2015/03/01 Loop diagrams]
 
 
-\RequirePackage{pstricks,pst-plot,pst-coil}
-
+%%\RequirePackage[pdf]{pstricks}
+\RequirePackage{pstricks}
+\RequirePackage{pst-plot,pst-coil}
+\RequirePackage{calc}
+\RequirePackage{fp}
 %%
 %% Macro section
 %%
@@ -31,18 +34,27 @@
 
 %
 % place a dipole interaction on the ket side
-% usage: \ketdipin{t}{fieldlabel}{timelabel}{state}
+% usage: \ketins{t}{fieldlabel}{timelabel}{state}
 %
-\newcommand{\ketin}[4]
+\newcommand{\ketins}[4]
+{
+\ketin{#1}{#2}{#3}
+% state after interaction
+\putket{#1}{#4}
+}
+
+%
+% place a dipole interaction on the ket side
+% usage: \ketdipin{t}{fieldlabel}{timelabel}
+%
+\newcommand{\ketin}[3]
 {
 % arrow in ->
 \psline{->}(!\loopbase\space -1 add #1\space -.5 add)(\loopbase,#1)
 % field label
 \rput[Br](!\loopbase\space -1 add #1\space -.5 add){#2}
 % time label
-\rput[br](!\loopbase\space -.1 add #1){#3}
-% state after interaction
-\putket{#1}{#4}
+\rput[br](!\loopbase\space -.2 add #1){#3}
 }
 
 
@@ -50,7 +62,18 @@
 % place a dipole interaction on the bra side
 % usage: \braintin{t}{fieldlabel}{timelabel}{state}
 %
-\newcommand{\brain}[4]
+\newcommand{\brains}[4]
+{
+\brain{#1}{#2}{#3}
+% state after interaction
+\putbra{#1}{#4}
+}
+
+%
+% place a dipole interaction on the bra side
+% usage: \braintin{t}{fieldlabel}{timelabel}
+%
+\newcommand{\brain}[3]
 {
 % arrow in ->
 \psline{->}(!\loopbase\space \loopwidth\space add 1 add #1\space -.5 add)
@@ -59,31 +82,50 @@
 \rput[Bl](!\loopbase\space \loopwidth\space add 1 add #1\space -.5 add){#2}
 % time label
 \rput[bl](!\loopbase\space \loopwidth\space add .15 add #1){#3}
-% state after interaction
-\putbra{#1}{#4}
 }
 
 %
 % place a dipole interaction on the ket side
 % usage: \ketintout{t}{fieldlabel}{timelabel}{state}
 %
-\newcommand{\ketout}[4]
+\newcommand{\ketouts}[4]
+{
+\ketout{#1}{#2}{#3}
+% state after interaction
+\putket{#1}{#4}
+}
+
+
+%
+% place a dipole interaction on the ket side
+% usage: \ketintout{t}{fieldlabel}{timelabel}
+%
+\newcommand{\ketout}[3]
 {
 % arrow out ->
 \psline{->}(\loopbase,#1)(!\loopbase\space -1 add #1\space +.5 add)
 % field label
 \rput[Br](!\loopbase\space -1 add #1\space +.5 add){#2}
 % time label
-\rput[br](!\loopbase\space -.1 add #1 0.4 add){#3}
-% state after interaction
-\putket{#1}{#4}
+\rput[br](!\loopbase\space -.2 add #1 0.6 add){#3}
 }
 
 %
 % place a dipole interaction on the bra side
-% usage: \braintout{t}{fieldlabel}{timelabel}{state}
+% usage: \bratouts{t}{fieldlabel}{timelabel}{state}
 %
-\newcommand{\braout}[4]
+\newcommand{\braouts}[4]
+{
+\braout{#1}{#2}{#3}
+% state after interaction
+\putbra{#1}{#4}
+}
+
+%
+% place a dipole interaction on the bra side
+% usage: \braout{t}{fieldlabel}{timelabel}
+%
+\newcommand{\braout}[3]
 {
 % arrow in ->
 \psline{->}(!\loopbase\space \loopwidth\space add #1)
@@ -92,15 +134,24 @@
 \rput[Bl](!\loopbase\space \loopwidth\space add 1 add #1\space +.5 add){#2}
 % time label
 \rput[bl](!\loopbase\space \loopwidth\space add 0.15 add #1 0.4 add){#3}
-% state after interaction
-\putbra{#1}{#4}
 }
 
 %
 % Place a Raman interaction on the ket side
-% usage: \ketintio{t}{fieldlabel_in}{fieldlabel_out}{timelabel}{state}
+% usage: \ketinouts{t}{fieldlabel_in}{fieldlabel_out}{timelabel}{state}
 %
-\newcommand{\ketinout}[5]
+\newcommand{\ketinouts}[5]
+{
+\ketinout{#1}{#2}{#3}{#4}
+% state after interaction
+\putket{#1}{#5}
+}
+
+%
+% Place a Raman interaction on the ket side
+% usage: \ketinout{t}{fieldlabel_in}{fieldlabel_out}{timelabel}
+%
+\newcommand{\ketinout}[4]
 {
 % arrow in ->
 \psline{->}(!\loopbase\space -1 add #1\space -.5 add)(\loopbase,#1)
@@ -112,15 +163,24 @@
 \rput[Br](!\loopbase\space -1 add #1\space +.5 add){#3}
 %time label
 \rput[br](!\loopbase\space -.1 add #1 0.4 add){#4}
-% state after interaction
-\putket{#1}{#5}
 }
 
 %
 % Place a Raman interaction on the ket side
-% usage: \braintio{t}{fieldlabel_in}{fieldlabel_out}{timelabel}{state}
+% usage: \brainout{t}{fieldlabel_in}{fieldlabel_out}{timelabel}{state}
 %
-\newcommand{\brainout}[5]
+\newcommand{\brainouts}[5]
+{
+\brainout{#1}{#2}{#3}{#4}
+% state after interaction
+\putbra{#1}{#5}
+}
+
+%
+% Place a Raman interaction on the ket side
+% usage: \brainout{t}{fieldlabel_in}{fieldlabel_out}{timelabel}
+%
+\newcommand{\brainout}[4]
 {
 % arrow out ->
 \psline{->}(!\loopbase\space \loopwidth\space add #1)
@@ -129,8 +189,6 @@
 \rput[Bl](!\loopbase\space \loopwidth\space add 1 add #1\space +.5 add){#3}
 % time label
 \rput[bl](!\loopbase\space \loopwidth\space add 0.15 add #1 0.4 add){#4}
-% state after interaction
-\putbra{#1}{#5}
 % arrow in <-
 \psline{->}(!\loopbase\space \loopwidth\space add 1 add #1\space -.5 add)
  (!\loopbase\space \loopwidth\space add #1)
@@ -154,9 +212,11 @@
        
 \def\looplen{#1}  % height of the loop
 \def\loopbase{2}  % base x
-\def\loopwidth{2} % width 
+\def\loopwidth{2.5} % width
+\FPdiv{\loopradius}{\loopwidth}{2.0} % half the width 
 
-\begin{pspicture}(0,0)(6, #1)
+\FPadd{\result}{\looplen}{\loopradius} 
+\begin{pspicture}(0,0)(6, \result)
 
 
 %
@@ -166,17 +226,17 @@
 
 % place the ket line
 \psline[arrowlength=2,arrowinset=0]{->}(\loopbase, 0)(\loopbase,1)
-\psline(\loopbase,0)(!\loopbase\space \looplen\space -1 add)
+\psline(\loopbase,0)(\loopbase, \looplen)
 \putket{0}{#2}
 
 % place the bra line
-\psline(!\loopbase\space \loopwidth\space add \looplen\space -1 add)(!\loopbase\space \loopwidth\space add 0)
-\psline[arrowlength=2,arrowinset=0]{>-}(4,1)(4,0)
+\psline(!\loopbase\space \loopwidth\space add \looplen)(!\loopbase\space \loopwidth\space add 0)
+\psline[arrowlength=2,arrowinset=0]{>-}(!\loopbase\space \loopwidth\space add 1)(!\loopbase\space \loopwidth\space add 0)
 \putbra{0}{#3}
 
 % the arc/loop on top
-\psarc(!\loopwidth\space 0.5 mul \loopbase\space add \looplen\space -1 add){1}{0}{90}
-\psarc[arrowlength=1.5,arrowinset=0]{<-}(!\loopwidth\space 0.5 mul \loopbase\space add \looplen\space -1 add){1}{85}{180}
+\psarc(!\loopwidth\space 0.5 mul \loopbase\space add \looplen){\loopradius}{0}{90}
+\psarc[arrowlength=1.5,arrowinset=0]{<-}(!\loopwidth\space 0.5 mul \loopbase\space add \looplen ){\loopradius}{85}{180}
 
 
 }{ \end{pspicture} }
@@ -203,13 +263,11 @@
 %
 
 % place the ket line
-%\psline[arrowlength=2,arrowinset=0]{->}(\loopbase, 0)(\loopbase,1)
 \psline(\loopbase,0)(!\loopbase\space \looplen\space -1 add)
 \putket{0}{#2}
 
 % place the bra line
 \psline(!\loopbase\space \loopwidth\space add \looplen\space -1 add)(!\loopbase\space \loopwidth\space add 0)
-%\psline[arrowlength=2,arrowinset=0]{>-}(4,1)(4,0)
 \putbra{0}{#3}
 
 

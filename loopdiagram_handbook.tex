@@ -14,7 +14,7 @@ diagrams. All drawing macros are implemented by using the PSTricks packages.
 Use either plain LaTeX or XeLaTex to compile documents. With PDFLatex there are
 some PSTricks specific problems. The package is simply called by specifing
 \verb|\usepackage{loopdiagram}| in the document header.
-
+\FPadd{\result}{1.}{2.} \result
 \section{Types of Diagrams}
 So far three different types of diagrams are implemented: Simple energy level
 diagrams, ladder diagrams, and loop diagrams. For each type of diagram a separate
@@ -83,28 +83,28 @@ with a field are drawn by:
 \section{Examples}
 Here we go. Let's create a loop diagram like this:
 \begin{center}
-\begin{loopdiagram}{9}{g}{d}
-\psgrid[subgriddiv=2](0,0)(0,0)(6,9)
-\ketinout{5}{$\omega_1$}{$\omega_2$}{$\tau_6$}{c}
-\brainout{6}{$\omega_1$}{$\omega_2$}{$\tau_5$}{e}
-\ketout{7}{$\omega_s$}{$t$}{e}
-\ketin{2}{$\omega_1$}{$\tau_1$}{e}
-\brain{2}{$\omega_2$}{$\tau_2$}{e^\prime}
-\ketout{3}{$\omega_3$}{$\tau_3$}{f}
-\braout{3}{$\omega_4$}{$\tau_4$}{f^\prime}
+\begin{loopdiagram}{8}{g}{d}
+%\psgrid[subgriddiv=2](0,0)(0,0)(6,10.25)
+\ketinouts{5}{$\omega_1$}{$\omega_2$}{$\tau_6$}{c}
+\brainouts{6}{$\omega_1$}{$\omega_2$}{$\tau_5$}{e}
+\ketouts{7}{$\omega_s$}{$t$}{e}
+\ketins{2}{$\omega_1$}{$\tau_1$}{e}
+\brains{2}{$\omega_2$}{$\tau_2$}{e^\prime}
+\ketouts{3}{$\omega_3$}{$\tau_3$}{f}
+\braouts{3}{$\omega_4$}{$\tau_4$}{f^\prime}
 \end{loopdiagram}
 \end{center}
 The grid in the background is just there to visualize the coordinate system.
 This is the code to create it:
 \begin{verbatim}
 \begin{loopdiagram}{9}{g}{d}
-\ketin{2}{$\omega_1$}{$\tau_1$}{e}
-\brain{2}{$\omega_2$}{$\tau_2$}{e^\prime}
-\ketout{3}{$\omega_3$}{$\tau_3$}{f}
-\braout{3}{$\omega_4$}{$\tau_4$}{f^\prime}
-\ketinout{5}{$\omega_1$}{$\omega_2$}{$\tau_6$}{c}
-\brainout{6}{$\omega_1$}{$\omega_2$}{$\tau_5$}{e}
-\ketout{7}{$\omega_s$}{$t$}{e}
+\ketins{2}{$\omega_1$}{$\tau_1$}{e}
+\brains{2}{$\omega_2$}{$\tau_2$}{e^\prime}
+\ketouts{3}{$\omega_3$}{$\tau_3$}{f}
+\braouts{3}{$\omega_4$}{$\tau_4$}{f^\prime}
+\ketinouts{5}{$\omega_1$}{$\omega_2$}{$\tau_6$}{c}
+\brainouts{6}{$\omega_1$}{$\omega_2$}{$\tau_5$}{e}
+\ketouts{7}{$\omega_s$}{$t$}{e}
 \end{loopdiagram}
 \end{verbatim}
 
@@ -113,13 +113,13 @@ Here is the same thing, but ploted as a ladder digram with the
 \begin{center}
 \begin{ladderdiagram}{9}{g}{d}
 %\psgrid[subgriddiv=2](0,0)(0,0)(6,9)
-\ketinout{5}{$\omega_1$}{$\omega_2$}{$\tau_6$}{c}
-\brainout{6}{$\omega_1$}{$\omega_2$}{$\tau_5$}{e}
-\ketout{7}{$\omega_s$}{$t$}{e}
-\ketin{2}{$\omega_1$}{$\tau_1$}{e}
-\brain{2}{$\omega_2$}{$\tau_2$}{e^\prime}
-\ketout{3}{$\omega_3$}{$\tau_3$}{f}
-\braout{3}{$\omega_4$}{$\tau_4$}{f^\prime}
+\ketinouts{5}{$\omega_1$}{$\omega_2$}{$\tau_6$}{c}
+\brainouts{6}{$\omega_1$}{$\omega_2$}{$\tau_5$}{e}
+\ketouts{7}{$\omega_s$}{$t$}{e}
+\ketins{2}{$\omega_1$}{$\tau_1$}{e}
+\brains{2}{$\omega_2$}{$\tau_2$}{e^\prime}
+\ketouts{3}{$\omega_3$}{$\tau_3$}{f}
+\braouts{3}{$\omega_4$}{$\tau_4$}{f^\prime}
 \end{ladderdiagram}
 \end{center}
 
